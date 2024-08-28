@@ -1,0 +1,55 @@
+version: "2"
+
+services:
+
+    # -----------------------------
+    #   Versant Database container.
+    #   Maps the locations of models (see volumes) with the Versant Database running within this container.  
+    # --------------
+    dps_integration:
+        image: armdocker.rnd.ericsson.se/proj_oss_releases/enm/dps-integration:latest
+        volumes:
+            - /etc/opt/ericsson/ERICmodeldeployment/data
+            - /etc/opt/ericsson/ERICmodeldeployment/models
+            - /opt/ericsson/ERICdpsupgrade/egt/output
+
+    # ---------------------
+    #   Postgres container.
+    #   Required for Service Framework.
+    # -------
+    postgres:
+        image: armdocker.rnd.ericsson.se/proj_oss_releases/enm/postgres:latest
+
+    # ------------------
+    #   JBoss container.
+    #   Main container where most of ENM Core/Services are being deployed.
+    # ----
+    jboss:
+        links:
+            - postgres:postgresql-server
+            - dps_integration:db1-service
+        build: src/test/docker/jboss
+        volumes_from:
+            - dps_integration
+        environment:
+            - JAVA_OPTS=-Xms2g -Xmx2g -XX:PermSize=512m -XX:MaxPermSize=1g
+        ports:
+            - "9999:9999"
+            - "9990:9990"
+            - "8080:8080"
+            - "8787:8787"            
+
+    # -------------------
+    #   NetSim container.
+    #   Provides Network Elements that are used to run E2E integration tests. 
+    # -----
+    netsim:
+        build: src/test/docker/netsim
+        environment:
+            - DISPLAY
+        volumes:
+            - /tmp/.X11-unix:/tmp/.X11-unix
+        cap_add:
+            - NET_ADMIN
+        network_mode: "service:jboss"     
+ 

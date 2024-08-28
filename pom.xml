@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.ericsson.nms</groupId>
+        <artifactId>integration</artifactId>
+        <version>15.2.0.40</version>
+    </parent>
+
+    <groupId>com.ericsson.oss.services.cm.cellprov.test</groupId>
+    <artifactId>cell-provisioning-integration</artifactId>
+    <version>1.6.2-SNAPSHOT</version>
+    <packaging>pom</packaging>
+    <name>[${project.artifactId}]</name>
+    <description>
+        Integration testware for ENM 'Cell Management' feature.
+        Uses the following main technologies:
+            - Arquillian
+            - Docker                   
+    </description>
+
+
+    <organization>
+        <name>Ericsson</name>
+        <url>http://www.ericsson.com</url>
+    </organization>
+
+    <developers>
+        <developer>
+            <name>Team Doozers</name>
+            <id>ENM/Doozers</id>
+        </developer>
+    </developers>
+
+
+    <modules>
+        <module>cell-provisioning-integration-arquillian</module>
+    </modules>
+
+
+    <scm>
+        <connection>${scm.ericsson-url}</connection>
+        <developerConnection>${scm.ericsson-url}</developerConnection>
+        <tag>HEAD</tag>
+    </scm>
+
+
+    <properties>
+        <scm.ericsson-url>scm:git:[fetch=]ssh://gerritmirror-ha.lmera.ericsson.se:29418/OSS/com.ericsson.oss.services.cm.cellprov.test/cell-provisioning-integration[push=]ssh://gerrit.ericsson.se:29418/OSS/com.ericsson.oss.services.cm.cellprov.test/cell-provisioning-integration</scm.ericsson-url>
+    </properties>
+
+</project>

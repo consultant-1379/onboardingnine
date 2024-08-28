@@ -1,0 +1,251 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.ericsson.oss.services.cm.cellprov.test</groupId>
+        <artifactId>cell-provisioning-integration</artifactId>
+        <version>1.6.1-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>cell-provisioning-integration-arquillian</artifactId>
+    <packaging>jar</packaging>
+
+    <name>[${project.artifactId}]</name>
+
+    <description>
+        Core module containing the integration tests. 
+        Tests rely heavily on the Arquillian framework, which allows the test cases to be run in a real JEE container.
+        The objective of this module is to test the full end-to-end flow using real production components.
+        Mocking/stubbing of the intermediate components in the flow is strongly discouraged.   
+    </description>
+
+
+    <properties>
+        <!-- \ 3PP COMPONENTS / -->
+
+        <!-- Test Frameworks -->
+        <version.assertj>2.3.0</version.assertj>
+
+        <!-- Other -->
+        <version.jsch>0.1.53</version.jsch>
+
+        <!-- Plugins -->
+        <version.maven-surefire-plugin>2.17</version.maven-surefire-plugin>
+
+
+        <!-- \ ENM COMPONENTS / -->
+
+        <!-- ENM Frameworks -->
+        <version.testware-commons>1.0.15</version.testware-commons>
+
+        <!-- Other ENM applications -->
+        <version.licence-management-service-api>1.4</version.licence-management-service-api>
+
+        <!-- Cell Management -->
+        <version.cell-provisioning-service-api>1.0.30</version.cell-provisioning-service-api>
+        <version.cell-provisioning-service>1.7.8</version.cell-provisioning-service>
+
+        <!-- Test-suite to be run (see the available test-suits in [...].integration.cases.suites package) -->
+        <testsuite>FullIntegrationTestSuiteNoCleanUp</testsuite>
+    </properties>
+
+
+    <dependencyManagement>
+        <dependencies>
+            <!-- \ 3PP COMPONENTS / -->
+
+            <!-- Test Frameworks -->
+            <dependency>
+                <groupId>org.assertj</groupId>
+                <artifactId>assertj-core</artifactId>
+                <version>${version.assertj}</version>
+                <scope>test</scope>
+            </dependency>
+
+            <!-- Other -->
+            <dependency>
+                <groupId>com.jcraft</groupId>
+                <artifactId>jsch</artifactId>
+                <version>${version.jsch}</version>
+            </dependency>
+
+            <!-- \ ENM COMPONENTS / -->
+
+            <!-- ENM Docker (manages most of ENM components' versions) -->
+            <dependency>
+                <groupId>com.ericsson.oss.de</groupId>
+                <artifactId>enm-docker-bom</artifactId>
+                <version>RELEASE</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <!-- ENM Test -->
+            <dependency>
+                <groupId>com.ericsson.oss.itpf.testware</groupId>
+                <artifactId>testware-commons-jar</artifactId>
+                <version>${version.testware-commons}</version>
+                <scope>provided</scope>
+            </dependency>
+
+            <!-- Other ENM applications -->
+            <dependency>
+                <groupId>com.ericsson.licensemanagement</groupId>
+                <artifactId>LicenseManagementService-API</artifactId>
+                <version>${version.licence-management-service-api}</version>
+            </dependency>
+
+            <!-- Cell Management -->
+            <dependency>
+                <groupId>com.ericsson.oss.services.cm.cellprov</groupId>
+                <artifactId>cell-provisioning-service-api-jar</artifactId>
+                <version>${version.cell-provisioning-service-api}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>com.ericsson.oss.services.cm.cellprov</groupId>
+                <artifactId>cell-provisioning-service-ear</artifactId>
+                <version>${version.cell-provisioning-service}</version>
+                <type>ear</type>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+
+    <dependencies>
+        <!-- \ 3PP COMPONENETS / -->
+
+        <!-- Test Frameworks -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.hamcrest</groupId>
+            <artifactId>hamcrest-library</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.assertj</groupId>
+            <artifactId>assertj-core</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.jboss.shrinkwrap.resolver</groupId>
+            <artifactId>shrinkwrap-resolver-impl-maven</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.jboss.arquillian.junit</groupId>
+            <artifactId>arquillian-junit-container</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.jboss.arquillian.protocol</groupId>
+            <artifactId>arquillian-protocol-servlet</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.eu.ingwar.tools</groupId>
+            <artifactId>arquillian-suite-extension</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- JBoss -->
+        <dependency>
+            <groupId>org.jboss.spec</groupId>
+            <artifactId>jboss-javaee-6.0</artifactId>
+            <type>pom</type>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- Other -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.jcraft</groupId>
+            <artifactId>jsch</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+
+        <!-- \ ENM COMPONENTS / -->
+
+        <!-- ENM Core -->
+        <dependency>
+            <groupId>com.ericsson.oss.itpf.datalayer.dps</groupId>
+            <artifactId>dps-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.ericsson.oss.itpf.datalayer.dps</groupId>
+            <artifactId>data-access-delegate-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- ENM Services -->
+        <dependency>
+            <groupId>com.ericsson.oss.services.lcm</groupId>
+            <artifactId>license-control-monitoring-service-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- ENM Test -->
+        <dependency>
+            <groupId>com.ericsson.oss.itpf.testware</groupId>
+            <artifactId>testware-commons-jar</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- Cell Management -->
+        <dependency>
+            <groupId>com.ericsson.oss.services.cm.cellprov</groupId>
+            <artifactId>cell-provisioning-service-api-jar</artifactId>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
+
+
+    <build>
+        <plugins>
+            <!-- Maven Surefire -->
+            <plugin>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>${version.maven-surefire-plugin}</version>
+                <configuration>
+                    <test>${testsuite}</test>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+
+    <profiles>
+        <!-- JBoss Remote Container profile -->
+        <profile>
+            <id>remote</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+
+            <dependencies>
+                <!-- JBoss Remote Container -->
+                <dependency>
+                    <groupId>org.jboss.as</groupId>
+                    <artifactId>jboss-as-arquillian-container-remote</artifactId>
+                    <scope>test</scope>
+                </dependency>
+            </dependencies>
+        </profile>
+    </profiles>
+
+</project>
